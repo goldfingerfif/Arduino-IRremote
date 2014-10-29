@@ -4,8 +4,6 @@
  * Version 0.1 July, 2009
  * Copyright 2009 Ken Shirriff
  * http://arcfn.com
- * JVC and Panasonic protocol added by Kristian Lauszus (Thanks to zenwheel and other people at the original blog post)
- * LG added by Darryl Smith (based on the JVC protocol)
  */
 
 #include <IRremote.h>
@@ -21,6 +19,30 @@ void setup()
   Serial.begin(9600);
   irrecv.enableIRIn(); // Start the receiver
 }
+
+// based on Print::printNumber
+void printHex64(unsigned long long n)
+{
+  unsigned char buf[sizeof(unsigned long long) * 2];
+  unsigned long i = 0;
+
+  if (n == 0) {
+    Serial.print('0');
+    return;
+  } 
+
+  while (n > 0) {
+    buf[i++] = n & 0xf;
+    n >>= 4;
+  }
+
+  for (; i > 0; i--) {
+    Serial.print((char) (buf[i - 1] < 10 ?
+      '0' + buf[i - 1] :
+      'A' + buf[i - 1] - 10));
+  }
+}
+
 
 // Dumps out the decode_results structure.
 // Call this after IRrecv::decode()
@@ -44,18 +66,7 @@ void dump(decode_results *results) {
   else if (results->decode_type == RC6) {
     Serial.print("Decoded RC6: ");
   }
-  else if (results->decode_type == PANASONIC) {	
-    Serial.print("Decoded PANASONIC - Address: ");
-    Serial.print(results->panasonicAddress,HEX);
-    Serial.print(" Value: ");
-  }
-  else if (results->decode_type == LG) {
-     Serial.print("Decoded LG: ");
-  }
-  else if (results->decode_type == JVC) {
-     Serial.print("Decoded JVC: ");
-  }
-  Serial.print(results->value, HEX);
+  printHex64(results->value);
   Serial.print(" (");
   Serial.print(results->bits, DEC);
   Serial.println(" bits)");
@@ -78,7 +89,6 @@ void dump(decode_results *results) {
 
 void loop() {
   if (irrecv.decode(&results)) {
-    Serial.println(results.value, HEX);
     dump(&results);
     irrecv.resume(); // Receive the next value
   }
