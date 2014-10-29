@@ -1,3 +1,5 @@
+This is a fork with changes to add as a library for Spark Core.
+
 This is the IRremote library for the Arduino.
 
 To install on Arduino 0018 or later, move this directory to:
