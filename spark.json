@@ -1,0 +1,7 @@
+{
+    "name": "IRremote",
+    "version": "0.11",
+    "author": "Sparkio Port:David Dougherty goldfingerfif@gmail.com Library:Joshua Noble thefactoryfactory@gmail.com",
+    "license": "GPL v2.1 (https://www.gnu.org/licenses/lgpl-2.1.html)",
+    "description": "IR Receiver such as VS1838B"
+}
