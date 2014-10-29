@@ -14,7 +14,6 @@
 #ifndef IRremoteint_h
 #define IRremoteint_h
 
-#include <WProgram.h>
 
 // define which timer to use
 //
